@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ω-Conditions Dashboard | NODE00 V3</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', monospace; }
+        body { background: #0a0a0a; color: #0f0; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { color: cyan; border-left: 4px solid cyan; padding-left: 16px; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .card { background: #111; border: 1px solid #333; border-radius: 8px; padding: 16px; }
+        .card h3 { color: cyan; margin-bottom: 12px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .revenue-number { font-size: 32px; font-weight: bold; color: #0f0; }
+        .omega-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
+        .omega-item { background: #1a1a1a; padding: 6px; text-align: center; border-radius: 4px; font-family: monospace; }
+        .green { color: #0f0; }
+        .yellow { color: #ff0; }
+        .red { color: #f00; }
+        table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        th, td { border: 1px solid #333; padding: 8px; text-align: left; font-size: 12px; }
+        th { background: #1a1a1a; color: cyan; }
+        .live-badge { background: #f00; color: white; padding: 2px 8px; border-radius: 12px; font-size: 10px; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .footer { margin-top: 20px; text-align: center; color: #555; font-size: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🔮 NODE00 V3 | Ω-CONDITIONS DASHBOARD <span class="live-badge">LIVE</span></h1>
+    
+    <div class="grid">
+        <div class="card">
+            <h3>💰 REVENUE (WEEK 1)</h3>
+            <div class="revenue-number" id="revenue">$0.00</div>
+            <div style="font-size: 10px; margin-top: 8px;">vs target: $47,300</div>
+            <div style="font-size: 10px; margin-top: 4px;">📊 hour-by-hour below</div>
+        </div>
+        <div class="card">
+            <h3>🧠 Ω-CONDITIONS HEALTH</h3>
+            <div class="omega-grid" id="omegaHealth">
+                <div class="omega-item">λ <span id="lambda">✅</span></div>
+                <div class="omega-item">κ <span id="kappa">✅</span></div>
+                <div class="omega-item">τ <span id="tau">✅</span></div>
+                <div class="omega-item">Γ <span id="gamma">✅</span></div>
+                <div class="omega-item">θ <span id="theta">✅</span></div>
+                <div class="omega-item">σ <span id="sigma">✅</span></div>
+                <div class="omega-item">α <span id="alpha">✅</span></div>
+                <div class="omega-item">Ω <span id="omega" style="color:#0f0;">🔴 ACTIVE</span></div>
+            </div>
+        </div>
+        <div class="card">
+            <h3>🤖 AI REVENUE AGENT</h3>
+            <div>Optimal Price: <strong id="aiPrice">$61.10</strong></div>
+            <div>Top Pick: <strong id="aiPick">Autonomous Scale Package</strong></div>
+            <div style="margin-top:8px;">📈 Demand: <span id="demand">0.82</span></div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h3>⏱️ HOURLY SALES (LAST 24 HOURS)</h3>
+        <table id="hourlyTable">
+            <thead><tr><th>Hour</th><th>Visitors</th><th>Sales</th><th>Revenue</th><th>Conv%</th><th>AOV</th></tr></thead>
+            <tbody id="hourlyBody"><tr><td colspan="6">Awaiting data...</td></tr></tbody>
+        </table>
+    </div>
+    
+    <div class="footer">
+        Ω-λ | Ω-κ | Ω-τ | Ω-Γ | Ω-θ | Ω-σ | Ω-α | Zero Collapse Guarantee | Last updated: <span id="timestamp"></span>
+    </div>
+</div>
+<script>
+    async function fetchData() {
+        try {
+            const res = await fetch('/api/dashboard');
+            const data = await res.json();
+            document.getElementById('revenue').innerText = '$' + data.totalRevenue.toLocaleString();
+            document.getElementById('aiPrice').innerText = '$' + data.aiPrice;
+            document.getElementById('aiPick').innerText = data.aiPick;
+            document.getElementById('demand').innerText = data.demand;
+            document.getElementById('timestamp').innerText = new Date().toLocaleString();
+            const omega = data.omegaHealth;
+            document.getElementById('lambda').innerHTML = omega.lambda ? '✅' : '❌';
+            document.getElementById('kappa').innerHTML = omega.kappa ? '✅' : '❌';
+            document.getElementById('tau').innerHTML = omega.tau ? '✅' : '❌';
+            document.getElementById('gamma').innerHTML = omega.gamma ? '✅' : '❌';
+            document.getElementById('theta').innerHTML = omega.theta ? '✅' : '❌';
+            document.getElementById('sigma').innerHTML = omega.sigma ? '✅' : '❌';
+            document.getElementById('alpha').innerHTML = omega.alpha ? '✅' : '❌';
+            let rows = '';
+            for (let h of data.hourly) {
+                rows += `<tr><td>${h.hour}</td><td>${h.visitors}</td><td>${h.sales}</td><td>$${h.revenue}</td><td>${h.conv}</td><td>$${h.aov}</td></tr>`;
+            }
+            document.getElementById('hourlyBody').innerHTML = rows || '<tr><td colspan="6">No sales yet</td></tr>';
+        } catch(e) { console.log('Waiting for API...'); }
+    }
+    fetchData();
+    setInterval(fetchData, 60000);
+</script>
+</body>
+</html>
