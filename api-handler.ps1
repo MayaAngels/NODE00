@@ -41,9 +41,14 @@ if ($requestPath -like "/api/create-checkout") {
     .\api-subscription.ps1
 } elseif ($requestPath -like "/api/downgrade-plan") {
     .\api-subscription.ps1
+} } elseif ($requestPath -like "/api/detect-region") {
+    .\api-region.ps1
+} elseif ($requestPath -like "/api/region-pricing") {
+    .\api-region.ps1
 } else {
     Write-Output '{"error": "Unknown API endpoint"}'
 }
+
 
 
 

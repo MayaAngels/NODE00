@@ -1,0 +1,121 @@
+﻿{
+  "regions": [
+    {
+      "code": "US",
+      "countries": ["US", "CA", "MX"],
+      "currency": "USD",
+      "symbol": "$",
+      "language": "en",
+      "pricingMultiplier": 1.0,
+      "paymentMethods": ["card", "google_pay", "apple_pay"]
+    },
+    {
+      "code": "EU",
+      "countries": ["IE", "GB", "DE", "FR", "ES", "IT", "PT", "NL", "BE"],
+      "currency": "EUR",
+      "symbol": "€",
+      "language": "en",
+      "pricingMultiplier": 0.95,
+      "paymentMethods": ["card", "ideal", "sofort", "bancontact"]
+    },
+    {
+      "code": "BR",
+      "countries": ["BR"],
+      "currency": "BRL",
+      "symbol": "R$",
+      "language": "pt",
+      "pricingMultiplier": 0.85,
+      "paymentMethods": ["card", "pix", "boleto"]
+    },
+    {
+      "code": "SA",
+      "countries": ["AR", "CL", "CO", "PE", "UY", "PY"],
+      "currency": "USD",
+      "symbol": "$",
+      "language": "es",
+      "pricingMultiplier": 0.9,
+      "paymentMethods": ["card"]
+    },
+    {
+      "code": "ASIA",
+      "countries": ["JP", "KR", "SG", "IN", "ID", "PH", "VN", "TH", "MY"],
+      "currency": "USD",
+      "symbol": "$",
+      "language": "en",
+      "pricingMultiplier": 0.88,
+      "paymentMethods": ["card", "alipay", "wechat"]
+    },
+    {
+      "code": "OCEANIA",
+      "countries": ["AU", "NZ"],
+      "currency": "USD",
+      "symbol": "$",
+      "language": "en",
+      "pricingMultiplier": 1.05,
+      "paymentMethods": ["card"]
+    }
+  ],
+  "defaultRegion": "US",
+  "languages": {
+    "en": {
+      "name": "English",
+      "welcome": "Welcome to Ω-Conditions V3",
+      "hero_title": "Autonomous AI Ecommerce",
+      "hero_subtitle": "Set It. Forget It. Watch It Grow.",
+      "buy_now": "Buy Now",
+      "subscribe": "Subscribe",
+      "learn_more": "Learn More",
+      "products": "Products",
+      "features": "Features",
+      "testimonials": "Testimonials",
+      "contact": "Contact",
+      "blog": "Blog",
+      "login": "Login",
+      "logout": "Logout",
+      "dashboard": "Dashboard",
+      "profile": "Profile",
+      "subscription": "Subscription",
+      "footer": "Ω-Conditions V3 — Mathematically guaranteed open-ended intelligence."
+    },
+    "pt": {
+      "name": "Português",
+      "welcome": "Bem-vindo ao Ω-Conditions V3",
+      "hero_title": "Ecommerce Autônomo com IA",
+      "hero_subtitle": "Configure. Esqueça. Veja Crescer.",
+      "buy_now": "Comprar Agora",
+      "subscribe": "Assinar",
+      "learn_more": "Saiba Mais",
+      "products": "Produtos",
+      "features": "Funcionalidades",
+      "testimonials": "Depoimentos",
+      "contact": "Contato",
+      "blog": "Blog",
+      "login": "Entrar",
+      "logout": "Sair",
+      "dashboard": "Painel",
+      "profile": "Perfil",
+      "subscription": "Assinatura",
+      "footer": "Ω-Conditions V3 — Inteligência de código aberto matematicamente garantida."
+    },
+    "es": {
+      "name": "Español",
+      "welcome": "Bienvenido a Ω-Conditions V3",
+      "hero_title": "Ecommerce Autónomo con IA",
+      "hero_subtitle": "Configura. Olvida. Mira Crecrer.",
+      "buy_now": "Comprar Ahora",
+      "subscribe": "Suscribirse",
+      "learn_more": "Más Información",
+      "products": "Productos",
+      "features": "Características",
+      "testimonials": "Testimonios",
+      "contact": "Contacto",
+      "blog": "Blog",
+      "login": "Iniciar Sesión",
+      "logout": "Cerrar Sesión",
+      "dashboard": "Panel",
+      "profile": "Perfil",
+      "subscription": "Suscripción",
+      "footer": "Ω-Conditions V3 — Inteligencia de código abierto matemáticamente garantizada."
+    }
+  }
+}

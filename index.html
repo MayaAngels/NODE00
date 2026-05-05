@@ -104,8 +104,8 @@
         <div class="container">
             <!-- Hero Section -->
             <section class="hero">
-                <h1>Autonomous AI Ecommerce<br>Set It. Forget It. Watch It Grow.</h1>
-                <p>7 Ω-conditions mathematically guarantee stability, AI pricing optimization, and 24/7 autonomous sales. No coding. No maintenance. No collapse.</p>
+                <h1 data-i18n="hero_title">Autonomous AI Ecommerce</h1>
+                <p data-i18n="hero_subtitle">7 Ω-conditions mathematically guarantee stability, AI pricing optimization, and 24/7 autonomous sales. No coding. No maintenance. No collapse.</p>
                 <div class="hero-buttons">
                     <button class="btn-primary" onclick="window.location.href='#products'">Start Earning →</button>
                     <button class="btn-secondary" onclick="window.open('https://dashboard.render.com', '_blank')">Live Dashboard →</button>
@@ -143,9 +143,9 @@
             <!-- Products -->
             <h2 class="section-title" id="products">Choose Your Path</h2>
             <div class="products-grid">
-                <div class="product-card"><h3>Ω-Conditions AI License</h3><div class="product-price">$47</div><button class="product-btn" onclick="checkout(47)">Get License →</button></div>
+                <div class="product-card"><h3>Ω-Conditions AI License</h3><div class="product-price">$47</div><button class="product-btn" onclick="checkout(47)"><span data-i18n="buy_now">Get License</span> →</button></div>
                 <div class="product-card"><h3>Autonomous Scale Package</h3><div class="product-price">$97</div><button class="product-btn" onclick="checkout(97)">Scale Now →</button></div>
-                <div class="product-card"><h3>Daily Revenue Report</h3><div class="product-price">$29</div><button class="product-btn" onclick="checkout(29)">Subscribe →</button></div>
+                <div class="product-card"><h3>Daily Revenue Report</h3><div class="product-price">$29</div><button class="product-btn" onclick="checkout(29)"><span data-i18n="subscribe">Subscribe</span> →</button></div>
                 <div class="product-card"><h3>Full V3 System (Monthly)</h3><div class="product-price">$199</div><button class="product-btn" onclick="checkout(199)">Enterprise →</button></div>
             </div>
 
@@ -168,7 +168,7 @@
         messageDiv.innerHTML = '⏳ Enviando...';
         
         try {
-            const response = await fetch('/api/subscribe', {
+            const response = await fetch('/api/<span data-i18n="subscribe">Subscribe</span>', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email })
@@ -239,7 +239,7 @@
     </script>
 <footer class="footer">
         <div class="container">
-            <p>🔮 Ω-Conditions V3 — Mathematically guaranteed open-ended intelligence.</p>
+            <p data-i18n="hero_subtitle">7 Ω-conditions mathematically guarantee stability, AI pricing optimization, and 24/7 autonomous sales. No coding. No maintenance. No collapse.</p>
             <p style="margin-top: 16px;">&copy; 2026 NODE00. All systems autonomous.</p>
         </div>
     </footer>
@@ -346,8 +346,62 @@
     loadProjectStatus();
     setInterval(loadProjectStatus, 30000);
     </script>
+<script>
+// Adaptive region detection for the frontend
+let userRegion = null;
+let userCurrency = null;
+let userLanguage = null;
+
+async function detectUserRegion() {
+    try {
+        const response = await fetch('/api/detect-region');
+        const data = await response.json();
+        userRegion = data.region;
+        userCurrency = data.currency;
+        userCurrencySymbol = data.currencySymbol;
+        userLanguage = data.language;
+        
+        // Apply translations
+        if (data.translations) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (data.translations[key]) {
+                    el.textContent = data.translations[key];
+                }
+            });
+        }
+        
+        // Update prices based on region
+        await updatePricesForRegion();
+        
+        console.log(`🌍 Region detected: ${userRegion} | Currency: ${userCurrency}`);
+    } catch(e) {
+        console.log('Region detection failed, using defaults');
+    }
+}
+
+async function updatePricesForRegion() {
+    const priceElements = document.querySelectorAll('[data-price]');
+    for (const el of priceElements) {
+        const basePrice = parseFloat(el.getAttribute('data-price'));
+        if (basePrice) {
+            const response = await fetch('/api/region-pricing', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ basePrice: basePrice, region: userRegion || 'US' })
+            });
+            const data = await response.json();
+            el.textContent = `${data.symbol}${data.adjustedPrice}`;
+        }
+    }
+}
+
+detectUserRegion();
+</script>
 </body>
 </html>
+
+
 
 
 
