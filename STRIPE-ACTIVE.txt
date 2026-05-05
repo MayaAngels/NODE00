@@ -1,0 +1,3 @@
+﻿Stripe Active: 05/05/2026 18:01:03
+Secret: sk_live_...
+Revenue: -v(StripeRevenueLoop.TotalRevenue)
