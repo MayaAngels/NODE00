@@ -1,0 +1,89 @@
+﻿[
+    {
+        "Name":  "TranscendentAIEcology",
+        "Color":  "#00cc66",
+        "Path":  "C:\\Users\\Maya\\TranscendentAIEcology",
+        "LastChecked":  "05/05/2026 19:43:05",
+        "Status":  "Healthy",
+        "Issues":  {
+
+                   }
+    },
+    {
+        "Name":  "sdk-core",
+        "Color":  "#ffcc00",
+        "Path":  "C:\\Users\\Maya\\DIGITALBUSINESS2\\.venv_zto\\Lib\\site-packages\\temporalio\\bridge\\sdk-core",
+        "LastChecked":  "05/05/2026 19:43:06",
+        "Status":  "Needs Attention",
+        "Issues":  [
+                       "No remote configured",
+                       "Never pushed successfully"
+                   ]
+    },
+    {
+        "Name":  "autonomous-core",
+        "Color":  "#00cc66",
+        "Path":  "C:\\Users\\Maya\\NewDigitalShop\\autonomous-core",
+        "LastChecked":  "05/05/2026 19:43:14",
+        "Status":  "Healthy",
+        "Issues":  {
+
+                   }
+    },
+    {
+        "Name":  "docker-fix",
+        "Color":  "#ffcc00",
+        "Path":  "C:\\Users\\Maya\\NewDigitalShop\\docker-fix",
+        "LastChecked":  "05/05/2026 19:43:16",
+        "Status":  "Needs Attention",
+        "Issues":  "5 pending commits"
+    },
+    {
+        "Name":  "NODE00",
+        "Color":  "#00cc66",
+        "Path":  "C:\\Users\\Maya\\NewDigitalShop\\NODE00",
+        "LastChecked":  "05/05/2026 19:43:17",
+        "Status":  "Healthy",
+        "Issues":  {
+
+                   }
+    },
+    {
+        "Name":  "origine-digital",
+        "Color":  "#ffcc00",
+        "Path":  "C:\\Users\\Maya\\NewDigitalShop\\origine-digital",
+        "LastChecked":  "05/05/2026 19:43:19",
+        "Status":  "Needs Attention",
+        "Issues":  "15 pending commits"
+    },
+    {
+        "Name":  "ORIGINE_TEMP",
+        "Color":  "#00cc66",
+        "Path":  "C:\\Users\\Maya\\NewDigitalShop\\ORIGINE_TEMP",
+        "LastChecked":  "05/05/2026 19:43:20",
+        "Status":  "Healthy",
+        "Issues":  {
+
+                   }
+    },
+    {
+        "Name":  "repo",
+        "Color":  "#00cc66",
+        "Path":  "C:\\Users\\Maya\\NewDigitalShop\\unified-autonomous-system\\repo",
+        "LastChecked":  "05/05/2026 19:43:20",
+        "Status":  "Healthy",
+        "Issues":  {
+
+                   }
+    },
+    {
+        "Name":  "NODE00",
+        "Color":  "#00cc66",
+        "Path":  "C:\\Users\\Maya\\NewDigitalShop\\NODE00",
+        "LastChecked":  "05/05/2026 19:43:21",
+        "Status":  "Healthy",
+        "Issues":  {
+
+                   }
+    }
+]

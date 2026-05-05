@@ -9,5 +9,8 @@
     indexDocument: index.html
     routes:
       - type: rewrite
+        source: /api/*
+        destination: /api-handler.ps1
+      - type: rewrite
         source: /*
         destination: /index.html

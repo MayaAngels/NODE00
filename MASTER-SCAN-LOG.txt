@@ -1,0 +1,79 @@
+[2026-05-05 19:39:56] ?? Master Guardian Scanner started
+[2026-05-05 19:39:56] ?? Scanning for Git repositories...
+[2026-05-05 19:39:56]   Scanning C:\Users\Margarete\Documents
+[2026-05-05 19:39:57]   Scanning C:\Users\Margarete\Desktop
+[2026-05-05 19:39:57]   Scanning C:\Users
+[2026-05-05 19:42:59] ? Found 9 Git repositories
+[2026-05-05 19:42:59] Analyzing: C:\Users\Maya\TranscendentAIEcology
+[2026-05-05 19:43:05]   ? Repository is healthy
+[2026-05-05 19:43:05] Analyzing: C:\Users\Maya\DIGITALBUSINESS2\.venv_zto\Lib\site-packages\temporalio\bridge\sdk-core
+[2026-05-05 19:43:06]   ?? Issues found: No remote configured, Never pushed successfully
+[2026-05-05 19:43:06]   ? Custom Guardian created at: C:\Users\Maya\DIGITALBUSINESS2\.venv_zto\Lib\site-packages\temporalio\bridge\sdk-core\CustomGuardian.ps1
+[2026-05-05 19:43:11]   ??? Guardian started for sdk-core
+[2026-05-05 19:43:11] Analyzing: C:\Users\Maya\NewDigitalShop\autonomous-core
+[2026-05-05 19:43:14]   ? Repository is healthy
+[2026-05-05 19:43:14] Analyzing: C:\Users\Maya\NewDigitalShop\docker-fix
+[2026-05-05 19:43:16]   ?? Issues found: 5 pending commits
+[2026-05-05 19:43:16]   ? Custom Guardian created at: C:\Users\Maya\NewDigitalShop\docker-fix\CustomGuardian.ps1
+[2026-05-05 19:43:16]   ??? Guardian started for docker-fix
+[2026-05-05 19:43:16] Analyzing: C:\Users\Maya\NewDigitalShop\NODE00
+[2026-05-05 19:43:17]   ? Repository is healthy
+[2026-05-05 19:43:17] Analyzing: C:\Users\Maya\NewDigitalShop\origine-digital
+[2026-05-05 19:43:19]   ?? Issues found: 15 pending commits
+[2026-05-05 19:43:19]   ? Custom Guardian created at: C:\Users\Maya\NewDigitalShop\origine-digital\CustomGuardian.ps1
+[2026-05-05 19:43:19]   ??? Guardian started for origine-digital
+[2026-05-05 19:43:19] Analyzing: C:\Users\Maya\NewDigitalShop\ORIGINE_TEMP
+[2026-05-05 19:43:20]   ? Repository is healthy
+[2026-05-05 19:43:20] Analyzing: C:\Users\Maya\NewDigitalShop\unified-autonomous-system\repo
+[2026-05-05 19:43:20]   ? Repository is healthy
+[2026-05-05 19:43:20] Analyzing: C:\Users\Maya\NewDigitalShop\NODE00
+[2026-05-05 19:43:21]   ? Repository is healthy
+[2026-05-05 19:43:26] ? Scan complete. Found 9 projects.
+[2026-05-05 19:43:26] ??? Guardians active for projects with issues.
+[2026-05-05 19:43:26] SUMMARY: [
+    {
+        "Name":  null,
+        "Status":  null,
+        "Issues":  null
+    },
+    {
+        "Name":  null,
+        "Status":  null,
+        "Issues":  null
+    },
+    {
+        "Name":  null,
+        "Status":  null,
+        "Issues":  null
+    },
+    {
+        "Name":  null,
+        "Status":  null,
+        "Issues":  null
+    },
+    {
+        "Name":  null,
+        "Status":  null,
+        "Issues":  null
+    },
+    {
+        "Name":  null,
+        "Status":  null,
+        "Issues":  null
+    },
+    {
+        "Name":  null,
+        "Status":  null,
+        "Issues":  null
+    },
+    {
+        "Name":  null,
+        "Status":  null,
+        "Issues":  null
+    },
+    {
+        "Name":  null,
+        "Status":  null,
+        "Issues":  null
+    }
+]
