@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Ω-Conditions V3</title>
+    <meta name="description" content="Artigos sobre ecommerce autônomo, AI pricing, Ω-conditions e estratégias de receita digital.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #0a0a0a; color: #fff; padding: 40px 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: #00cc66; margin-bottom: 40px; border-left: 4px solid #00cc66; padding-left: 20px; }
+        .post { background: #1a1a1a; border-radius: 16px; padding: 24px; margin-bottom: 24px; transition: transform 0.3s; }
+        .post:hover { transform: translateY(-4px); background: #222; }
+        .post-title { font-size: 24px; color: #00cc66; margin-bottom: 12px; text-decoration: none; display: block; }
+        .post-date { color: #666; font-size: 12px; margin-bottom: 12px; }
+        .post-excerpt { color: #aaa; line-height: 1.6; }
+        .back-link { display: inline-block; margin-top: 40px; color: #00cc66; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Blog Ω-Conditions</h1>
+        <div id="posts-container">
+            <!-- Posts serão carregados dinamicamente -->
+        </div>
+        <a href="/" class="back-link">← Voltar para a home</a>
+    </div>
+    <script>
+        async function loadPosts() {
+            try {
+                const res = await fetch('/api/blog-posts');
+                const posts = await res.json();
+                const container = document.getElementById('posts-container');
+                container.innerHTML = posts.map(post => `
+                    <div class="post">
+                        <a href="/blog/${post.slug}" class="post-title">${post.title}</a>
+                        <div class="post-date">${post.date}</div>
+                        <div class="post-excerpt">${post.excerpt}</div>
+                    </div>
+                `).join('');
+            } catch(e) {
+                document.getElementById('posts-container').innerHTML = '<div>Carregando...</div>';
+            }
+        }
+        loadPosts();
+    </script>
+</body>
+</html>
