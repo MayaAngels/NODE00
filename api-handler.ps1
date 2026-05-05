@@ -53,9 +53,12 @@ if ($requestPath -like "/api/create-checkout") {
     .\api-personalize.ps1
 } elseif ($requestPath -like "/api/user-insights") {
     .\api-personalize.ps1
+} } elseif ($requestPath -like "/webhook/stripe") {
+    .\api-webhook.ps1
 } else {
     Write-Output '{"error": "Unknown API endpoint"}'
 }
+
 
 
 

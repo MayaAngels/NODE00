@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Webhook Setup | Ω-Conditions</title>
+    <style>
+        body { background: #0a0a0a; color: #fff; font-family: monospace; padding: 40px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        code { background: #1a1a1a; padding: 12px; display: block; border-radius: 8px; margin: 16px 0; }
+        .step { background: #1a1a1a; padding: 20px; border-radius: 12px; margin: 20px 0; }
+        h1 { color: #00cc66; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💳 Stripe Webhook Configuration</h1>
+        <p>Configure seu Stripe para enviar eventos de pagamento para o sistema.</p>
+        
+        <div class="step">
+            <h2>📋 Step 1: Get your webhook URL</h2>
+            <code>https://node00-omega.onrender.com/webhook/stripe</code>
+        </div>
+        
+        <div class="step">
+            <h2>⚙️ Step 2: Configure in Stripe Dashboard</h2>
+            <p>1. Acesse <a href="https://dashboard.stripe.com/webhooks" target="_blank" style="color:#00cc66;">Stripe Dashboard → Developers → Webhooks</a></p>
+            <p>2. Clique em "Add endpoint"</p>
+            <p>3. Cole a URL acima</p>
+            <p>4. Selecione os eventos:</p>
+            <code>checkout.session.completed<br>customer.subscription.created<br>customer.subscription.updated</code>
+            <p>5. Clique em "Add endpoint"</p>
+        </div>
+        
+        <div class="step">
+            <h2>🔐 Step 3: Add Signing Secret to .env</h2>
+            <p>Após criar o webhook, copie o "Signing secret" e adicione ao arquivo .env:</p>
+            <code>STRIPE_WEBHOOK_SECRET=whsec_xxx</code>
+        </div>
+        
+        <div class="step">
+            <h2>✅ Step 4: Test the webhook</h2>
+            <p>No Stripe Dashboard, use o botão "Send test webhook" para verificar.</p>
+            <p>Eventos reais aparecerão em <code>WEBHOOK-LOG.txt</code></p>
+        </div>
+        
+        <p><a href="/" style="color: #00cc66;">← Voltar para home</a></p>
+    </div>
+</body>
+</html>
