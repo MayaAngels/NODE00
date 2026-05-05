@@ -19,9 +19,16 @@ if ($requestPath -like "/api/create-checkout") {
     .\api-backup.ps1
 } elseif ($requestPath -like "/api/backup-now") {
     .\api-backup.ps1
+} } elseif ($requestPath -like "/api/login") {
+    .\api-auth.ps1
+} elseif ($requestPath -like "/api/register") {
+    .\api-auth.ps1
+} elseif ($requestPath -like "/api/verify-session") {
+    .\api-auth.ps1
 } else {
     Write-Output '{"error": "Unknown API endpoint"}'
 }
+
 
 
 

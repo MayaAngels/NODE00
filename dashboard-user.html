@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | Ω-Conditions V3</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #0a0a0a; color: #fff; }
+        .header { background: #1a1a1a; padding: 20px; border-bottom: 1px solid #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .welcome-card { background: linear-gradient(135deg, #1a1a2e, #0a0a0a); border-radius: 24px; padding: 40px; margin-bottom: 40px; border: 1px solid rgba(0,204,102,0.3); }
+        .welcome-card h1 { color: #00cc66; margin-bottom: 8px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 40px; }
+        .stat-card { background: #1a1a1a; border-radius: 16px; padding: 24px; text-align: center; border: 1px solid #333; }
+        .stat-value { font-size: 36px; font-weight: bold; color: #00cc66; }
+        .stat-label { color: #aaa; margin-top: 8px; }
+        .btn-logout { background: #ff4444; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+        .nav { display: flex; justify-content: space-between; align-items: center; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="nav">
+            <div class="logo">🔮 Ω-Conditions V3</div>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="welcome-card" id="welcomeCard">
+            <h1>Welcome back, <span id="userName">User</span>!</h1>
+            <p>Your autonomous ecosystem is ready. Track your revenue, manage subscriptions, and watch your system evolve.</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="planDisplay">free</div>
+                <div class="stat-label">Current Plan</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="revenueDisplay">$0</div>
+                <div class="stat-label">Total Revenue</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="productsDisplay">0</div>
+                <div class="stat-label">Products Purchased</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        async function loadUserData() {
+            const token = localStorage.getItem('session_token');
+            if (!token) {
+                window.location.href = '/auth.html';
+                return;
+            }
+            
+            const response = await fetch('/api/verify-session', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const data = await response.json();
+            
+            if (!data.valid) {
+                localStorage.removeItem('session_token');
+                window.location.href = '/auth.html';
+                return;
+            }
+            
+            document.getElementById('userName').innerText = data.user.name;
+            document.getElementById('planDisplay').innerText = data.user.plan;
+        }
+        
+        function logout() {
+            localStorage.removeItem('session_token');
+            window.location.href = '/auth.html';
+        }
+        
+        loadUserData();
+    </script>
+</body>
+</html>

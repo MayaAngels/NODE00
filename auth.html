@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Ω-Conditions V3</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .auth-container { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 24px; padding: 40px; width: 100%; max-width: 450px; border: 1px solid rgba(0,204,102,0.3); }
+        h1 { color: #00cc66; margin-bottom: 8px; font-size: 28px; }
+        .subtitle { color: #aaa; margin-bottom: 32px; font-size: 14px; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; color: #fff; margin-bottom: 8px; font-size: 14px; }
+        input { width: 100%; padding: 12px 16px; background: #1a1a1a; border: 1px solid #333; border-radius: 12px; color: #fff; font-size: 16px; transition: all 0.3s; }
+        input:focus { outline: none; border-color: #00cc66; box-shadow: 0 0 10px rgba(0,204,102,0.2); }
+        .btn-primary { width: 100%; padding: 14px; background: #00cc66; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s; margin-top: 16px; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,204,102,0.3); }
+        .switch { text-align: center; margin-top: 24px; color: #aaa; }
+        .switch a { color: #00cc66; text-decoration: none; cursor: pointer; }
+        .error { background: rgba(255,0,0,0.1); border: 1px solid #ff0000; color: #ff6666; padding: 12px; border-radius: 8px; margin-bottom: 20px; display: none; }
+        .success { background: rgba(0,204,102,0.1); border: 1px solid #00cc66; color: #00cc66; padding: 12px; border-radius: 8px; margin-bottom: 20px; display: none; }
+        .loading { display: none; text-align: center; margin-top: 16px; color: #00cc66; }
+        .social-login { margin-top: 24px; text-align: center; border-top: 1px solid #333; padding-top: 24px; }
+        .google-btn { background: #fff; color: #000; width: 100%; padding: 12px; border-radius: 12px; border: none; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div id="loginForm">
+            <h1>🔮 Ω-Conditions V3</h1>
+            <div class="subtitle">Login to your autonomous ecosystem</div>
+            <div id="loginError" class="error"></div>
+            <div id="loginSuccess" class="success"></div>
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="loginEmail" placeholder="you@example.com">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="••••••••">
+            </div>
+            <button class="btn-primary" onclick="login()">Login →</button>
+            <div class="switch">Don't have an account? <a onclick="showRegister()">Register here</a></div>
+            <div class="social-login">
+                <button class="google-btn" onclick="alert('Google login coming soon')">Continue with Google</button>
+            </div>
+            <div id="loginLoading" class="loading">Authenticating...</div>
+        </div>
+
+        <div id="registerForm" style="display: none;">
+            <h1>🔮 Create Account</h1>
+            <div class="subtitle">Join the autonomous revolution</div>
+            <div id="registerError" class="error"></div>
+            <div id="registerSuccess" class="success"></div>
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="regName" placeholder="Your name">
+            </div>
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="regEmail" placeholder="you@example.com">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="regPassword" placeholder="••••••••">
+            </div>
+            <div class="input-group">
+                <label>Confirm Password</label>
+                <input type="password" id="regConfirm" placeholder="••••••••">
+            </div>
+            <button class="btn-primary" onclick="register()">Create Account →</button>
+            <div class="switch">Already have an account? <a onclick="showLogin()">Login here</a></div>
+            <div id="registerLoading" class="loading">Creating account...</div>
+        </div>
+    </div>
+
+    <script>
+        function showRegister() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        }
+        
+        function showLogin() {
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        }
+        
+        async function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                showError('loginError', 'Please enter email and password');
+                return;
+            }
+            
+            document.getElementById('loginLoading').style.display = 'block';
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, password: password })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    localStorage.setItem('session_token', data.token);
+                    window.location.href = '/dashboard-user.html';
+                } else {
+                    showError('loginError', data.message);
+                }
+            } catch (error) {
+                showError('loginError', 'Connection error. Try again.');
+            }
+            
+            document.getElementById('loginLoading').style.display = 'none';
+        }
+        
+        async function register() {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirm = document.getElementById('regConfirm').value;
+            
+            if (!name || !email || !password) {
+                showError('registerError', 'Please fill all fields');
+                return;
+            }
+            
+            if (password !== confirm) {
+                showError('registerError', 'Passwords do not match');
+                return;
+            }
+            
+            document.getElementById('registerLoading').style.display = 'block';
+            
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name, email: email, password: password })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    showSuccess('registerSuccess', 'Account created! Redirecting to login...');
+                    setTimeout(() => { showLogin(); }, 2000);
+                } else {
+                    showError('registerError', data.message);
+                }
+            } catch (error) {
+                showError('registerError', 'Connection error. Try again.');
+            }
+            
+            document.getElementById('registerLoading').style.display = 'none';
+        }
+        
+        function showError(elementId, message) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.style.display = 'block';
+            setTimeout(() => { el.style.display = 'none'; }, 3000);
+        }
+        
+        function showSuccess(elementId, message) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
