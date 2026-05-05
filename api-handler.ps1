@@ -55,9 +55,16 @@ if ($requestPath -like "/api/create-checkout") {
     .\api-personalize.ps1
 } } elseif ($requestPath -like "/webhook/stripe") {
     .\api-webhook.ps1
+} } elseif ($requestPath -like "/api/predict-revenue") {
+    .\api-predictive.ps1
+} elseif ($requestPath -like "/api/anomaly-detection") {
+    .\api-predictive.ps1
+} elseif ($requestPath -like "/api/revenue-alerts") {
+    .\api-predictive.ps1
 } else {
     Write-Output '{"error": "Unknown API endpoint"}'
 }
+
 
 
 
