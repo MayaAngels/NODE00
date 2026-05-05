@@ -219,6 +219,64 @@
         loadGuardianStatus();
         setInterval(loadGuardianStatus, 30000);
     </script>
+    <div class="card">
+        <h3>🕵️ Multi-Project Guardian Scanner</h3>
+        <div id="scannerStatus">Ready to scan</div>
+        <button onclick="scanAllProjects()" class="btn-primary" style="margin-top:8px;">🔍 Scan All Projects Now</button>
+        <div id="projectList" style="margin-top:16px; max-height: 300px; overflow-y: auto;"></div>
+        <div style="font-size: 10px; margin-top: 8px; color: #666;">⏰ Automatic scan every hour</div>
+    </div>
+
+    <script>
+    async function scanAllProjects() {
+        document.getElementById('scannerStatus').innerHTML = '🔄 Scanning all Git repositories...';
+        await fetch('/api/scan-projects', { method: 'POST' });
+        setTimeout(loadProjectStatus, 8000);
+    }
+    
+    async function loadProjectStatus() {
+        try {
+            const res = await fetch('/api/project-status');
+            const data = await res.json();
+            let html = '';
+            const projects = data.projects || [];
+            for (let p of projects) {
+                const statusColor = p.Status === 'Healthy' ? '#00cc66' : '#ffcc00';
+                const issuesText = p.Issues ? p.Issues.join(', ') : 'None';
+                html += '<div style="padding: 8px; border-bottom: 1px solid #333; margin-bottom: 8px;">';
+                html += '<strong>📁 ' + p.Name + '</strong><br>';
+                html += '<span style="font-size: 11px; color: #aaa;">' + p.Path + '</span><br>';
+                html += 'Issues: ' + issuesText + '<br>';
+                html += '<span style="color: ' + statusColor + '">Status: ' + p.Status + '</span>';
+                if (p.Status !== 'Healthy') {
+                    html += ' <button onclick="healProject(\'' + p.Path.replace(/\\/g, '\\\\') + '\')" style="margin-left: 8px;">🛡️ Heal</button>';
+                }
+                html += '</div>';
+            }
+            if (projects.length === 0) {
+                html = '<div>No projects found yet. Click "Scan All Projects Now" to start.</div>';
+            }
+            document.getElementById('projectList').innerHTML = html;
+            document.getElementById('scannerStatus').innerHTML = '✅ Ready';
+        } catch(e) {
+            document.getElementById('projectList').innerHTML = '<div>Loading...</div>';
+        }
+    }
+    
+    async function healProject(repoPath) {
+        document.getElementById('scannerStatus').innerHTML = '🛡️ Starting healing for ' + repoPath.split('\\').pop();
+        await fetch('/api/heal-project', { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ repoPath: repoPath })
+        });
+        setTimeout(loadProjectStatus, 3000);
+    }
+    
+    loadProjectStatus();
+    setInterval(loadProjectStatus, 30000);
+    </script>
 </body>
 </html>
+
 
