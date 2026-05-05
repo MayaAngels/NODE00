@@ -61,9 +61,16 @@ if ($requestPath -like "/api/create-checkout") {
     .\api-predictive.ps1
 } elseif ($requestPath -like "/api/revenue-alerts") {
     .\api-predictive.ps1
+} } elseif ($requestPath -like "/api/evolution-status") {
+    .\api-evolution.ps1
+} elseif ($requestPath -like "/api/evolve") {
+    .\api-evolution.ps1
+} elseif ($requestPath -like "/api/apply-evolution") {
+    .\api-evolution.ps1
 } else {
     Write-Output '{"error": "Unknown API endpoint"}'
 }
+
 
 
 
