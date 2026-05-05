@@ -1,0 +1,211 @@
+﻿/* responsive.css - Mobile-first responsive design */
+/* Base styles (mobile first) */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 16px;
+    margin: 0 auto;
+}
+
+/* Typography */
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+p { font-size: 0.875rem; }
+
+/* Grid - mobile */
+.grid, .products-grid, .omega-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+/* Cards */
+.card, .product-card, .omega-card, .stat-card, .plan-card {
+    padding: 16px;
+    border-radius: 16px;
+}
+
+/* Buttons */
+.btn-primary, .btn-secondary, .product-btn, .plan-btn {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 0.875rem;
+}
+
+/* Header/navigation */
+.header {
+    padding: 12px 16px;
+}
+
+.nav {
+    flex-direction: column;
+    gap: 12px;
+}
+
+.nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+}
+
+.nav-links a, .nav-links button {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+}
+
+/* Revenue card */
+.revenue-number {
+    font-size: 2.5rem;
+}
+
+/* Tables - make scrollable */
+.table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    min-width: 600px;
+}
+
+th, td {
+    padding: 8px;
+    font-size: 0.75rem;
+}
+
+/* Modals and overlays */
+.modal {
+    width: 90%;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+/* Tablet breakpoint (768px and up) */
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+        padding: 0 20px;
+    }
+    
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.5rem; }
+    p { font-size: 1rem; }
+    
+    .grid, .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .omega-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .nav {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    .nav-links a, .nav-links button {
+        font-size: 0.875rem;
+    }
+    
+    .revenue-number {
+        font-size: 3.5rem;
+    }
+    
+    .btn-primary, .btn-secondary {
+        width: auto;
+        padding: 12px 32px;
+    }
+}
+
+/* Desktop breakpoint (1024px and up) */
+@media (min-width: 1024px) {
+    .container {
+        max-width: 1000px;
+    }
+    
+    h1 { font-size: 3rem; }
+    
+    .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .omega-grid {
+        grid-template-columns: repeat(7, 1fr);
+    }
+    
+    .revenue-number {
+        font-size: 4rem;
+    }
+}
+
+/* Large desktop (1440px and up) */
+@media (min-width: 1440px) {
+    .container {
+        max-width: 1200px;
+    }
+    
+    h1 { font-size: 3.5rem; }
+}
+
+/* Touch-friendly adjustments */
+@media (hover: none) and (pointer: coarse) {
+    button, .btn, .product-btn, .plan-btn, .nav-links a {
+        min-height: 44px;
+    }
+    
+    input, select, textarea {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: light) {
+    body {
+        background: #f5f5f5;
+        color: #1a1a1a;
+    }
+    
+    .card, .product-card, .omega-card, .stat-card, .plan-card {
+        background: #fff;
+        border-color: #e0e0e0;
+    }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .header, .footer, .btn, .product-btn, .plan-btn {
+        display: none;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+}

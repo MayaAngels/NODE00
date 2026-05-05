@@ -45,9 +45,12 @@ if ($requestPath -like "/api/create-checkout") {
     .\api-region.ps1
 } elseif ($requestPath -like "/api/region-pricing") {
     .\api-region.ps1
+} } elseif ($requestPath -like "/api/detect-device") {
+    .\api-device.ps1
 } else {
     Write-Output '{"error": "Unknown API endpoint"}'
 }
+
 
 
 

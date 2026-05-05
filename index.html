@@ -83,6 +83,7 @@
         }
     </style>
 <script src="stripe-config.js"></script>
+<link rel="stylesheet" href="/responsive.css">
 </head>
 <body>
     <header class="header">
@@ -398,8 +399,71 @@ async function updatePricesForRegion() {
 
 detectUserRegion();
 </script>
+<script src="/responsive.css" rel="stylesheet">
+<script>
+// Device detection and optimization
+async function detectAndOptimizeDevice() {
+    try {
+        const response = await fetch('/api/detect-device');
+        const device = await response.json();
+        
+        // Add device class to body
+        document.body.classList.add(`device-${device.type}`);
+        document.body.classList.add(`os-${device.os.toLowerCase()}`);
+        document.body.classList.add(`browser-${device.browser.toLowerCase()}`);
+        
+        if (device.isMobile) {
+            document.body.classList.add('is-mobile');
+            // Optimize for mobile: simplify UI
+            document.querySelectorAll('.desktop-only').forEach(el => el.style.display = 'none');
+        }
+        
+        if (device.isTablet) {
+            document.body.classList.add('is-tablet');
+        }
+        
+        console.log(`📱 Device detected: ${device.type} (${device.os} / ${device.browser})`);
+        
+        // Show recommendations in console (for debugging)
+        if (device.recommendations && device.recommendations.length > 0) {
+            console.log('💡 Device recommendations:', device.recommendations);
+        }
+    } catch(e) {
+        console.log('Device detection failed, using defaults');
+    }
+}
+
+detectAndOptimizeDevice();
+
+// Responsive image loading (load smaller images on mobile)
+function loadResponsiveImages() {
+    const isMobile = window.innerWidth < 768;
+    document.querySelectorAll('img[data-src-mobile], img[data-src-desktop]').forEach(img => {
+        const src = isMobile ? img.getAttribute('data-src-mobile') : img.getAttribute('data-src-desktop');
+        if (src) img.src = src;
+    });
+}
+
+window.addEventListener('load', loadResponsiveImages);
+window.addEventListener('resize', loadResponsiveImages);
+
+// Touch-friendly adjustments
+if ('ontouchstart' in window) {
+    document.body.classList.add('touch-device');
+}
+
+// Viewport height fix for mobile browsers
+function setVH() {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+setVH();
+window.addEventListener('resize', setVH);
+</script>
 </body>
 </html>
+
 
 
 

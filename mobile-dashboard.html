@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Mobile Dashboard | Ω-Conditions</title>
+    <link rel="stylesheet" href="/responsive.css">
+    <style>
+        .mobile-dashboard {
+            padding: 16px;
+        }
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .metric-card {
+            flex: 1;
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00cc66;
+        }
+        .metric-label {
+            font-size: 11px;
+            color: #aaa;
+            margin-top: 4px;
+        }
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .action-btn {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-dashboard">
+        <h1>🔮 Ω-Conditions</h1>
+        
+        <div class="metric-row">
+            <div class="metric-card">
+                <div class="metric-value" id="revenue">$0</div>
+                <div class="metric-label">Revenue</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="target">$47k</div>
+                <div class="metric-label">Target</div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="/subscription.html" class="action-btn">💰 Upgrade Plan</a>
+            <a href="/profile.html" class="action-btn">👤 My Profile</a>
+            <a href="/blog" class="action-btn">📝 Blog</a>
+            <a href="/" class="action-btn">🏠 Home</a>
+        </div>
+    </div>
+    
+    <script>
+        async function loadRevenue() {
+            try {
+                const res = await fetch('/api/metrics');
+                const data = await res.json();
+                document.getElementById('revenue').innerText = `$${data.totalRevenue || 0}`;
+            } catch(e) {}
+        }
+        loadRevenue();
+        setInterval(loadRevenue, 60000);
+    </script>
+</body>
+</html>
