@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscriptions | Ω-Conditions V3</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #0a0a0a; color: #fff; }
+        .header { background: #1a1a1a; padding: 20px; border-bottom: 1px solid #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 40px; }
+        .plan-card { background: #1a1a1a; border-radius: 24px; padding: 32px; text-align: center; border: 1px solid #333; transition: all 0.3s; position: relative; }
+        .plan-card:hover { transform: translateY(-5px); border-color: #00cc66; }
+        .plan-card.popular { border: 2px solid #00cc66; }
+        .popular-badge { position: absolute; top: -12px; right: 20px; background: #00cc66; color: #000; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .plan-name { font-size: 24px; font-weight: bold; margin-bottom: 16px; }
+        .plan-price { font-size: 48px; font-weight: bold; color: #00cc66; margin-bottom: 8px; }
+        .plan-period { color: #aaa; font-size: 14px; margin-bottom: 24px; }
+        .plan-features { list-style: none; text-align: left; margin: 24px 0; }
+        .plan-features li { padding: 8px 0; color: #aaa; font-size: 14px; }
+        .plan-features li::before { content: "✓ "; color: #00cc66; font-weight: bold; }
+        .plan-btn { width: 100%; padding: 14px; background: #00cc66; color: #000; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+        .plan-btn:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(0,204,102,0.3); }
+        .plan-btn.disabled { background: #333; color: #666; cursor: not-allowed; }
+        .current-plan { background: rgba(0,204,102,0.1); border: 1px solid #00cc66; padding: 16px; border-radius: 12px; margin-bottom: 24px; text-align: center; }
+        .nav-links { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+        .nav-links a { color: #fff; text-decoration: none; }
+        .nav-links a:hover { color: #00cc66; }
+        .btn-logout { background: #ff4444; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div class="logo">🔮 Ω-Conditions V3</div>
+            <div class="nav-links">
+                <a href="/dashboard-user.html">Dashboard</a>
+                <a href="/profile.html">Profile</a>
+                <a href="/subscription.html">Subscription</a>
+                <a href="/">Home</a>
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1 style="margin-bottom: 8px;">💰 Choose Your Plan</h1>
+        <p style="color: #aaa; margin-bottom: 40px;">Upgrade to unlock autonomous features and scale your revenue</p>
+        
+        <div id="currentPlanCard" class="current-plan" style="display: none;"></div>
+        <div id="plansContainer" class="plans-grid"></div>
+        
+        <div id="message" style="margin-top: 20px; text-align: center; color: #00cc66;"></div>
+    </div>
+
+    <script>
+        let currentPlan = null;
+        let currentToken = null;
+
+        async function loadPlans() {
+            const token = localStorage.getItem('session_token');
+            if (!token) {
+                window.location.href = '/auth.html';
+                return;
+            }
+            currentToken = token;
+
+            const response = await fetch('/api/plans');
+            const plans = await response.json();
+            
+            const container = document.getElementById('plansContainer');
+            container.innerHTML = plans.plans.map(plan => `
+                <div class="plan-card ${plan.id === 'pro' ? 'popular' : ''}">
+                    ${plan.id === 'pro' ? '<div class="popular-badge">🔥 MOST POPULAR</div>' : ''}
+                    <div class="plan-name">${plan.name}</div>
+                    <div class="plan-price">${plan.price === 0 ? 'FREE' : `$${plan.price}`}</div>
+                    <div class="plan-period">${plan.price > 0 ? '/month' : 'forever'}</div>
+                    <ul class="plan-features">
+                        ${plan.features.map(f => `<li>${f}</li>`).join('')}
+                    </ul>
+                    <button class="plan-btn" onclick="selectPlan('${plan.id}', ${plan.price})">
+                        ${plan.id === currentPlan ? 'Current Plan' : (plan.price === 0 ? 'Get Started' : 'Upgrade')}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        async function loadCurrentPlan() {
+            const response = await fetch('/api/user-plan', {
+                headers: { 'Authorization': 'Bearer ' + currentToken }
+            });
+            const data = await response.json();
+            currentPlan = data.plan;
+            
+            const currentCard = document.getElementById('currentPlanCard');
+            if (currentPlan !== 'free') {
+                currentCard.style.display = 'block';
+                currentCard.innerHTML = `<strong>✅ Current Plan: ${currentPlan.toUpperCase()}</strong><br>Enjoy your premium features!`;
+            }
+        }
+
+        async function selectPlan(planId, price) {
+            if (planId === currentPlan) {
+                showMessage('This is already your current plan', '#ffcc00');
+                return;
+            }
+            
+            if (price === 0) {
+                // Downgrade to free
+                const response = await fetch('/api/downgrade-plan', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + currentToken
+                    },
+                    body: JSON.stringify({ plan: planId })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showMessage('Plan downgraded to Free!', '#00cc66');
+                    currentPlan = 'free';
+                    loadPlans();
+                } else {
+                    showMessage(data.message || 'Error changing plan', '#ff4444');
+                }
+            } else {
+                // Upgrade - redirect to Stripe checkout
+                showMessage('Redirecting to secure checkout...', '#ffcc00');
+                const response = await fetch('/api/create-subscription', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + currentToken
+                    },
+                    body: JSON.stringify({ plan: planId })
+                });
+                const data = await response.json();
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    showMessage('Error creating checkout', '#ff4444');
+                }
+            }
+        }
+
+        function showMessage(msg, color) {
+            const el = document.getElementById('message');
+            el.textContent = msg;
+            el.style.color = color;
+            setTimeout(() => { el.textContent = ''; }, 3000);
+        }
+
+        function logout() {
+            localStorage.removeItem('session_token');
+            window.location.href = '/auth.html';
+        }
+
+        loadPlans();
+        loadCurrentPlan();
+    </script>
+</body>
+</html>

@@ -33,9 +33,18 @@ if ($requestPath -like "/api/create-checkout") {
     .\api-auth.ps1
 } elseif ($requestPath -like "/api/delete-account") {
     .\api-auth.ps1
+} } elseif ($requestPath -like "/api/plans") {
+    .\api-subscription.ps1
+} elseif ($requestPath -like "/api/user-plan") {
+    .\api-subscription.ps1
+} elseif ($requestPath -like "/api/create-subscription") {
+    .\api-subscription.ps1
+} elseif ($requestPath -like "/api/downgrade-plan") {
+    .\api-subscription.ps1
 } else {
     Write-Output '{"error": "Unknown API endpoint"}'
 }
+
 
 
 

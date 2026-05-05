@@ -1,0 +1,63 @@
+﻿{
+  "plans": [
+    {
+      "id": "free",
+      "name": "Free",
+      "price": 0,
+      "priceId": null,
+      "features": [
+        "Basic dashboard access",
+        "View Ω-conditions status",
+        "Public blog access",
+        "Email support (48h)"
+      ],
+      "limits": {
+        "products": 1,
+        "apiCalls": 100,
+        "teamMembers": 1
+      },
+      "color": "#666"
+    },
+    {
+      "id": "pro",
+      "name": "Pro",
+      "price": 47,
+      "priceId": "price_pro_monthly",
+      "features": [
+        "Full dashboard access",
+        "Real-time revenue charts",
+        "Autonomous posting (Twitter)",
+        "Email support (24h)",
+        "Up to 10 products",
+        "Priority support"
+      ],
+      "limits": {
+        "products": 10,
+        "apiCalls": 5000,
+        "teamMembers": 3
+      },
+      "color": "#00cc66"
+    },
+    {
+      "id": "enterprise",
+      "name": "Enterprise",
+      "price": 199,
+      "priceId": "price_enterprise_monthly",
+      "features": [
+        "Everything in Pro",
+        "Multi-project scanner",
+        "Cross-system learning",
+        "Dedicated support (1h)",
+        "Unlimited products",
+        "Custom AI training",
+        "White-label option"
+      ],
+      "limits": {
+        "products": -1,
+        "apiCalls": -1,
+        "teamMembers": -1
+      },
+      "color": "#ffcc00"
+    }
+  ]
+}
