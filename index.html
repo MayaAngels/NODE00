@@ -190,5 +190,35 @@
             // window.location.href = '/create-checkout?amount=' + amount;
         }
     </script>
+    <div class="card">
+        <h3>🛡️ Git Guardian Status</h3>
+        <div id="guardianStatus">Loading...</div>
+        <div>Last push: <span id="lastPush">-</span></div>
+        <div>Pending commits: <span id="pendingCommits">0</span></div>
+        <div>Failed pushes: <span id="failedPushes">0</span></div>
+        <button onclick="retryFailedPushes()" class="btn-outline" style="margin-top:8px;">Retry Failed</button>
+    </div>
+    
+    <script>
+        async function loadGuardianStatus() {
+            try {
+                const res = await fetch('/api/guardian-status');
+                const data = await res.json();
+                document.getElementById('guardianStatus').innerHTML = data.status;
+                document.getElementById('lastPush').innerText = data.lastPush;
+                document.getElementById('pendingCommits').innerText = data.pendingCommits;
+                document.getElementById('failedPushes').innerText = data.failedPushes;
+            } catch(e) { console.log('Guardian status loading...'); }
+        }
+        
+        async function retryFailedPushes() {
+            await fetch('/api/retry-pushes', { method: 'POST' });
+            alert('Retry initiated');
+        }
+        
+        loadGuardianStatus();
+        setInterval(loadGuardianStatus, 30000);
+    </script>
 </body>
 </html>
+
