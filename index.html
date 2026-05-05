@@ -203,7 +203,41 @@
         </div>
     </main>
 
-    <footer class="footer">
+        <div class="card">
+        <h3>💾 Backup Automático</h3>
+        <div id="backupStatus">Carregando...</div>
+        <div style="margin-top: 8px;">
+            <button onclick="backupNow()" class="btn-outline" style="margin-right: 8px;">Fazer Backup Agora</button>
+            <span id="lastBackupInfo" style="font-size: 11px; color: #666;"></span>
+        </div>
+        <div id="backupList" style="margin-top: 12px; max-height: 150px; overflow-y: auto;"></div>
+    </div>
+    
+    <script>
+    async function loadBackupStatus() {
+        try {
+            const res = await fetch('/api/backup-status');
+            const data = await res.json();
+            document.getElementById('lastBackupInfo').innerHTML = `Último backup: ${data.lastBackup}`;
+            let html = '';
+            for (let b of data.backups.slice(0, 5)) {
+                html += `<div style="font-size: 10px; color: #aaa;">📁 ${b.name} - ${b.size}MB - ${b.date}</div>`;
+            }
+            document.getElementById('backupList').innerHTML = html || '<div style="font-size: 11px; color: #666;">Nenhum backup encontrado</div>';
+            document.getElementById('backupStatus').innerHTML = data.backups.length > 0 ? '✅ Sistema protegido' : '⚠️ Nenhum backup ainda';
+        } catch(e) { console.log('Loading backup status...'); }
+    }
+    
+    async function backupNow() {
+        document.getElementById('backupStatus').innerHTML = '⏳ Backup em andamento...';
+        await fetch('/api/backup-now', { method: 'POST' });
+        setTimeout(loadBackupStatus, 5000);
+    }
+    
+    loadBackupStatus();
+    setInterval(loadBackupStatus, 60000);
+    </script>
+<footer class="footer">
         <div class="container">
             <p>🔮 Ω-Conditions V3 — Mathematically guaranteed open-ended intelligence.</p>
             <p style="margin-top: 16px;">&copy; 2026 NODE00. All systems autonomous.</p>
@@ -314,6 +348,7 @@
     </script>
 </body>
 </html>
+
 
 
 

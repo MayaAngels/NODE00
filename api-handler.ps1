@@ -15,9 +15,14 @@ if ($requestPath -like "/api/create-checkout") {
     .\api-blog.ps1
 } } elseif ($requestPath -like "/api/metrics") {
     .\api-metrics.ps1
+} } elseif ($requestPath -like "/api/backup-status") {
+    .\api-backup.ps1
+} elseif ($requestPath -like "/api/backup-now") {
+    .\api-backup.ps1
 } else {
     Write-Output '{"error": "Unknown API endpoint"}'
 }
+
 
 
 
