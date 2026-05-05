@@ -1,0 +1,17 @@
+﻿services:
+  - type: web
+    name: node00-omega
+    runtime: static
+    repo: https://github.com/MayaAngels/NODE00
+    branch: main
+    buildCommand: ""
+    staticPublishPath: ./
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /dashboard.html
+    envVars:
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
