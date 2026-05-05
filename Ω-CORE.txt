@@ -1,0 +1,4 @@
+﻿# NODE00 Ω-Core (λ, κ, τ, Γ, θ, σ, α)
+# All 7 Ω-conditions active as of 05/05/2026 17:57:01
+
+05/05/2026 17:57:01 - System initialized with fractal homeostasis, recursive criticality, Lyapunov horizon, constitutional graph, temporal coherence, scale separation, and anti-entropic memory.
