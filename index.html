@@ -461,8 +461,112 @@ function setVH() {
 setVH();
 window.addEventListener('resize', setVH);
 </script>
+<script>
+// Behavior tracking for personalization
+let sessionId = localStorage.getItem('session_id');
+if (!sessionId) {
+    sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('session_id', sessionId);
+}
+
+async function trackEvent(eventType, data = {}) {
+    const token = localStorage.getItem('session_token');
+    try {
+        await fetch('/api/track-behavior', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token ? 'Bearer ' + token : ''
+            },
+            body: JSON.stringify({
+                eventType: eventType,
+                data: data,
+                sessionId: sessionId
+            })
+        });
+    } catch(e) { console.log('Tracking failed'); }
+}
+
+// Track page views
+trackEvent('page_view', { page: window.location.pathname });
+
+// Track product views
+document.querySelectorAll('[data-product]').forEach(el => {
+    el.addEventListener('click', () => {
+        trackEvent('view_product', { product: el.getAttribute('data-product') });
+    });
+});
+
+// Track time on page
+let startTime = Date.now();
+window.addEventListener('beforeunload', () => {
+    const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+    trackEvent('time_on_page', { seconds: timeSpent, page: window.location.pathname });
+});
+</script>
+
+<script>
+// Load personalized recommendations
+async function loadRecommendations() {
+    const token = localStorage.getItem('session_token');
+    try {
+        const response = await fetch('/api/recommendations', {
+            headers: { 'Authorization': token ? 'Bearer ' + token : '' }
+        });
+        const data = await response.json();
+        
+        const container = document.getElementById('recommendations-container');
+        if (container && data.recommendations) {
+            container.innerHTML = '<h3>🎯 Recommended for You</h3><div class="products-grid">' +
+                data.recommendations.map(rec => `
+                    <div class="product-card">
+                        <h4>${rec.name}</h4>
+                        <div class="product-price">${rec.price}</div>
+                        <button class="product-btn" onclick="trackEvent('click_recommendation', {product: '${rec.id}'})">View →</button>
+                    </div>
+                `).join('') + '</div>';
+        }
+    } catch(e) { console.log('Recommendations failed'); }
+}
+
+// Load user insights on dashboard
+async function loadUserInsights() {
+    const token = localStorage.getItem('session_token');
+    if (!token) return;
+    
+    try {
+        const response = await fetch('/api/user-insights', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await response.json();
+        
+        const insightsContainer = document.getElementById('insights-container');
+        if (insightsContainer) {
+            insightsContainer.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-value">${data.totalVisits || 0}</div><div>Visits</div></div>
+                    <div class="stat-card"><div class="stat-value">${data.productsViewed || 0}</div><div>Products Viewed</div></div>
+                    <div class="stat-card"><div class="stat-value">${data.engagementScore || 0}%</div><div>Engagement</div></div>
+                </div>
+            `;
+        }
+    } catch(e) { console.log('Insights failed'); }
+}
+
+// Load when page is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        loadRecommendations();
+        loadUserInsights();
+    });
+} else {
+    loadRecommendations();
+    loadUserInsights();
+}
+</script>
 </body>
 </html>
+
 
 
 

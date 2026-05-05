@@ -47,9 +47,16 @@ if ($requestPath -like "/api/create-checkout") {
     .\api-region.ps1
 } } elseif ($requestPath -like "/api/detect-device") {
     .\api-device.ps1
+} } elseif ($requestPath -like "/api/track-behavior") {
+    .\api-personalize.ps1
+} elseif ($requestPath -like "/api/recommendations") {
+    .\api-personalize.ps1
+} elseif ($requestPath -like "/api/user-insights") {
+    .\api-personalize.ps1
 } else {
     Write-Output '{"error": "Unknown API endpoint"}'
 }
+
 
 
 
