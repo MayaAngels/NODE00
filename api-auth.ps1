@@ -78,3 +78,102 @@ if ($RequestPath -eq "/api/verify-session") {
         Write-Output '{ "valid": false }'
     }
 }
+# Adicionar ao api-auth.ps1 existente
+
+if ($RequestPath -eq "/api/update-profile") {
+    $token = $env:HTTP_AUTHORIZATION -replace "Bearer ", ""
+    $sessions = Get-Content "sessions.json" | ConvertFrom-Json
+    $userId = $sessions.$token
+    
+    if (-not $userId) {
+        Write-Output '{ "success": false, "message": "Invalid session" }'
+        exit
+    }
+    
+    $body = $RequestBody | ConvertFrom-Json
+    $users = Get-Content "users.json" | ConvertFrom-Json
+    
+    for ($i = 0; $i -lt $users.users.Count; $i++) {
+        if ($users.users[$i].id -eq $userId) {
+            $users.users[$i].name = $body.name
+            $users.users[$i].bio = $body.bio
+            break
+        }
+    }
+    
+    $users | ConvertTo-Json -Depth 10 | Out-File -FilePath "users.json" -Encoding utf8 -Force
+    Write-Output '{ "success": true, "message": "Profile updated" }'
+}
+
+if ($RequestPath -eq "/api/save-preferences") {
+    $token = $env:HTTP_AUTHORIZATION -replace "Bearer ", ""
+    $sessions = Get-Content "sessions.json" | ConvertFrom-Json
+    $userId = $sessions.$token
+    
+    if (-not $userId) {
+        Write-Output '{ "success": false, "message": "Invalid session" }'
+        exit
+    }
+    
+    $body = $RequestBody | ConvertFrom-Json
+    $users = Get-Content "users.json" | ConvertFrom-Json
+    
+    for ($i = 0; $i -lt $users.users.Count; $i++) {
+        if ($users.users[$i].id -eq $userId) {
+            $users.users[$i].preferences = @{
+                theme = $body.theme
+                language = $body.language
+                notifications = $body.notifications
+            }
+            break
+        }
+    }
+    
+    $users | ConvertTo-Json -Depth 10 | Out-File -FilePath "users.json" -Encoding utf8 -Force
+    Write-Output '{ "success": true, "message": "Preferences saved" }'
+}
+
+if ($RequestPath -eq "/api/change-password") {
+    $token = $env:HTTP_AUTHORIZATION -replace "Bearer ", ""
+    $sessions = Get-Content "sessions.json" | ConvertFrom-Json
+    $userId = $sessions.$token
+    
+    if (-not $userId) {
+        Write-Output '{ "success": false, "message": "Invalid session" }'
+        exit
+    }
+    
+    $body = $RequestBody | ConvertFrom-Json
+    $users = Get-Content "users.json" | ConvertFrom-Json
+    
+    for ($i = 0; $i -lt $users.users.Count; $i++) {
+        if ($users.users[$i].id -eq $userId) {
+            $users.users[$i].password_hash = $body.password
+            break
+        }
+    }
+    
+    $users | ConvertTo-Json -Depth 10 | Out-File -FilePath "users.json" -Encoding utf8 -Force
+    Write-Output '{ "success": true, "message": "Password changed" }'
+}
+
+if ($RequestPath -eq "/api/delete-account") {
+    $token = $env:HTTP_AUTHORIZATION -replace "Bearer ", ""
+    $sessions = Get-Content "sessions.json" | ConvertFrom-Json
+    $userId = $sessions.$token
+    
+    if (-not $userId) {
+        Write-Output '{ "success": false, "message": "Invalid session" }'
+        exit
+    }
+    
+    $users = Get-Content "users.json" | ConvertFrom-Json
+    $users.users = $users.users | Where-Object { $_.id -ne $userId }
+    $users | ConvertTo-Json -Depth 10 | Out-File -FilePath "users.json" -Encoding utf8 -Force
+    
+    # Remove session
+    $sessions.PSObject.Properties.Remove($token)
+    $sessions | ConvertTo-Json | Out-File -FilePath "sessions.json" -Encoding utf8 -Force
+    
+    Write-Output '{ "success": true, "message": "Account deleted" }'
+}

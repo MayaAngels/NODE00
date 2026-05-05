@@ -25,9 +25,18 @@ if ($requestPath -like "/api/create-checkout") {
     .\api-auth.ps1
 } elseif ($requestPath -like "/api/verify-session") {
     .\api-auth.ps1
+} } elseif ($requestPath -like "/api/update-profile") {
+    .\api-auth.ps1
+} elseif ($requestPath -like "/api/save-preferences") {
+    .\api-auth.ps1
+} elseif ($requestPath -like "/api/change-password") {
+    .\api-auth.ps1
+} elseif ($requestPath -like "/api/delete-account") {
+    .\api-auth.ps1
 } else {
     Write-Output '{"error": "Unknown API endpoint"}'
 }
+
 
 
 
