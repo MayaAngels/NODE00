@@ -9,6 +9,9 @@ if ($requestPath -like "/api/create-checkout") {
     .\api-scanner.ps1
 } elseif ($requestPath -like "/api/dashboard") {
     .\api.ps1
+} } elseif ($requestPath -like "/api/subscribe") {
+    .\api-subscribe.ps1
 } else {
     Write-Output '{"error": "Unknown API endpoint"}'
 }
+
